@@ -11,13 +11,17 @@ pipeline {
             steps {
                 script {
                     echo 'Cloning GitHub repo into Jenkins...'
-                    checkout scmGit(
+                    // checkout scmGit(   // ❌ scmGit is deprecated; replaced with checkout() below
+                    checkout([
+                        $class: 'GitSCM',
                         branches: [[name: '*/main']],
                         extensions: [],
                         userRemoteConfigs: [[
-                            url: 'https://github.com/data-guru0/MULTI-AI-AGENT-PROJECTS.git'
+                            url: 'https://github.com/data-guru0/MULTI-AI-AGENT-PROJECTS.git',
+                            credentialsId: 'github-token' // ✅ Add Jenkins credential ID
                         ]]
-                    )
+                    ])
+                    // )
                 }
             }
         }
@@ -37,8 +41,12 @@ pipeline {
             steps {
                 script {
                     echo 'Running container locally for testing...'
+                    // Added pre-cleanup to avoid duplicate container issues
                     sh """
+                    docker rm -f ${IMAGE_NAME}_container || true
                     docker run -d -p 8080:8080 --name ${IMAGE_NAME}_container ${IMAGE_NAME}:${IMAGE_TAG} || true
+                    sleep 5
+                    docker ps
                     """
                 }
             }
