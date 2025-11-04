@@ -6,12 +6,6 @@ pipeline {
         IMAGE_TAG = 'latest'
     }
 
-    // SonarQube and AWS environment variables (commented for now)
-    // SONAR_PROJECT_KEY = 'LLMOPS'
-    // SONAR_SCANNER_HOME = tool 'Sonarqube'
-    // AWS_REGION = 'us-east-1'
-    // ECR_REPO = 'my-repo'
-
     stages {
         stage('Cloning GitHub Repository') {
             steps {
@@ -62,13 +56,18 @@ pipeline {
             }
         }
 
+        // ───────────────────────────────────────────────
+        // OPTIONAL STAGES (disabled for now)
+        // ───────────────────────────────────────────────
+
+        // // SonarQube Analysis (Uncomment later when SonarQube is configured)
         // stage('SonarQube Analysis') {
         //     steps {
         //         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-        //             withSonarQubeEnv('Sonarqube') {
+        //             withSonarQubeEnv('SonarQubeServerName') {
         //                 sh """
-        //                     ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-        //                     -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+        //                     sonar-scanner \
+        //                     -Dsonar.projectKey=LLMOPS \
         //                     -Dsonar.sources=. \
         //                     -Dsonar.host.url=http://sonarqube-dind:9000 \
         //                     -Dsonar.login=${SONAR_TOKEN}
@@ -78,6 +77,7 @@ pipeline {
         //     }
         // }
 
+        // // AWS ECR Build and Push (Enable when AWS credentials are added)
         // stage('Build and Push Docker Image to ECR') {
         //     steps {
         //         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-token']]) {
@@ -96,6 +96,7 @@ pipeline {
         //     }
         // }
 
+        // // ECS Deployment (Enable later)
         // stage('Deploy to ECS Fargate') {
         //     steps {
         //         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-token']]) {
