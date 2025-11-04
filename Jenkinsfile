@@ -4,11 +4,13 @@ pipeline {
     environment {
         IMAGE_NAME = 'multi-ai-agent'
         IMAGE_TAG = 'latest'
-        // SONAR_PROJECT_KEY = 'LLMOPS'
-        // SONAR_SCANNER_HOME = tool 'Sonarqube'
-        // AWS_REGION = 'us-east-1'
-        // ECR_REPO = 'my-repo'
     }
+
+    // SonarQube and AWS environment variables (commented for now)
+    // SONAR_PROJECT_KEY = 'LLMOPS'
+    // SONAR_SCANNER_HOME = tool 'Sonarqube'
+    // AWS_REGION = 'us-east-1'
+    // ECR_REPO = 'my-repo'
 
     stages {
         stage('Cloning GitHub Repository') {
